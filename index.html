@@ -6,7 +6,37 @@
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="map"></div>
+    <div id="map">
+        <div id="tools">
+            <select id="drawSelect">
+                <option value="" label="Off" selected="selected">Off</option>
+                <optgroup label="Point">
+                    <option value="MULTI_POINT" label="MULTI_POINT" title="Draws a Multipoint.">MULTI_POINT</option>
+                    <option value="POINT" label="POINT" title="Draws a point.">POINT</option>
+                </optgroup>
+                <optgroup label="Line">
+                    <option value="FREEHAND_POLYLINE" label="FREEHAND_POLYLINE" title="Draws a freehand polyline.">FREEHAND_POLYLINE</option>
+                    <option value="LINE" label="LINE" title="Draws a line.">LINE</option>
+                    <option value="POLYLINE" label="POLYLINE" title="Draws a polyline.">POLYLINE</option>
+                </optgroup>
+                <optgroup label="Polygon">
+                    <option value="POLYGON" label="POLYGON" title="Draws a polygon.">POLYGON</option>
+                    <option value="FREEHAND_POLYGON" label="FREEHAND_POLYGON" title="Draws a freehand polygon.">FREEHAND_POLYGON</option>
+                    <option value="CIRCLE" label="CIRCLE" title="Draws a circle.">CIRCLE</option>
+                    <option value="ELLIPSE" label="ELLIPSE" title="Draws an ellipse.">ELLIPSE</option>
+                    <option value="RECTANGLE" label="RECTANGLE" title="Draws a rectangle.">RECTANGLE</option>
+                    <option value="EXTENT" label="EXTENT" title="Draws an extent box.">EXTENT</option>
+                    <option value="TRIANGLE" label="TRIANGLE" title="Draws a triangle.">TRIANGLE</option>
+
+                    <option value="ARROW" label="ARROW" title="Draws an arrow.">ARROW</option>
+                    <option value="DOWN_ARROW" label="DOWN_ARROW" title="Draws an arrow that points down.">DOWN_ARROW</option>
+                    <option value="LEFT_ARROW" label="LEFT_ARROW" title="Draws an arrow that points left.">LEFT_ARROW</option>
+                    <option value="RIGHT_ARROW" label="RIGHT_ARROW" title="Draws an arrow that points right.">RIGHT_ARROW</option>
+                    <option value="UP_ARROW" label="UP_ARROW" title="Draws an arrow that points up.">UP_ARROW</option>
+                </optgroup>
+            </select>
+        </div>
+    </div>
     <script data-dojo-config="async: true"></script>
     <script src="//js.arcgis.com/3.13/init.js"></script>
     <script src="script.js"></script>
