@@ -51,5 +51,30 @@ require([
 		}
 	});
 
+	var exportButton = document.getElementById("exportButton");
+	exportButton.addEventListener("click", function () {
+		var jsonObjects, jsonString, url, a, li, sr;
+		if (graphicsLayer && graphicsLayer.graphics && graphicsLayer.graphics.length) {
+			sr = graphicsLayer.graphics[0].geometry.spatialReference;
+			jsonObjects = graphicsLayer.graphics.map(function (g) {
+				var o = g.toJson();
+				delete o.symbol;
+				delete o.geometry.spatialReference;
+				return o;
+			});
+			jsonObjects = { features: jsonObjects, spatialRefernence: sr };
+			jsonString = JSON.stringify(jsonObjects);
+
+			url = ["data:application/json", encodeURIComponent(jsonString)].join(",");
+			a = document.createElement("a");
+			a.href = url;
+			a.target = "_blank";
+			a.textContent = "Exported Graphics";
+
+			li = document.createElement("li");
+			li.appendChild(a);
+			document.getElementById("exportedGraphics").appendChild(li);
+		}
+	});
 
 });

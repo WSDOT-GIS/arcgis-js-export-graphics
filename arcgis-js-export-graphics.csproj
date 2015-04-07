@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <None Include="LICENSE" />
     <Content Include="script.js" />
     <Content Include="style.css" />
   </ItemGroup>
