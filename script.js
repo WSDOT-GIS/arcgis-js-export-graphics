@@ -12,7 +12,7 @@ require([
 	var drawSelect = document.getElementById("drawSelect");
 
 	map = new Map("map", {
-		basemap: "hybrid",
+		basemap: "gray",
 		center: [-120.80566406246835, 47.41322033015946],
 		zoom: 7,
 		showAttribution: true
