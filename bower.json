@@ -1,0 +1,28 @@
+{
+  "name": "arcgis-js-export-graphics",
+  "homepage": "https://github.com/WSDOT-GIS/arcgis-js-export-graphics",
+  "authors": [
+    "WSDOT-GIS"
+  ],
+  "description": "Application allowing user to draw graphics and export to JSON",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "map",
+    "graphics",
+    "JSON",
+    "ArcGIS"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "proj4": "^2.3.12"
+  }
+}

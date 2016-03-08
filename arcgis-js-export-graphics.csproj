@@ -41,8 +41,12 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="bower_components\proj4\dist\proj4-src.js" />
+    <Content Include="bower_components\proj4\dist\proj4.js" />
     <Content Include="index.html" />
-    <None Include="LICENSE" />
+    <Content Include="bower.json" />
+    <Content Include="README.md" />
+    <None Include="UNLICENSE" />
     <Content Include="script.js" />
     <Content Include="style.css" />
   </ItemGroup>
