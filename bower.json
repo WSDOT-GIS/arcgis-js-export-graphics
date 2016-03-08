@@ -21,8 +21,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "dependencies": {
-    "proj4": "^2.3.12"
-  }
+  ]
 }
