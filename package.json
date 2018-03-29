@@ -4,7 +4,7 @@
   "description": "Exports drawn graphics to JSON text",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "node ./scripts/deploy.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/WSDOT-GIS/arcgis-js-export-graphics/issues"
   },
-  "homepage": "https://github.com/WSDOT-GIS/arcgis-js-export-graphics#readme"
+  "homepage": "https://github.com/WSDOT-GIS/arcgis-js-export-graphics#readme",
+  "private": true,
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
+  }
 }

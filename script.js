@@ -1,5 +1,4 @@
-﻿/// <reference path="./bower_components/proj4/dist/proj4.js" />
-require([
+﻿require([
     "esri/map",
     "esri/toolbars/draw",
     "esri/graphic",
