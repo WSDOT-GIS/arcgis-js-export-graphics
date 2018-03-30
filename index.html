@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Map</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css" integrity="sha384-JlJXhfCMkcb+ONuXG8SF0uwa+9zpeXcJifKmnldxRl3/9f2Kt7tLqSsSGKncUn7k" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css" integrity="sha384-JlJXhfCMkcb+ONuXG8SF0uwa+9zpeXcJifKmnldxRl3/9f2Kt7tLqSsSGKncUn7k" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
@@ -47,22 +47,7 @@
             <ol id="exportedGraphics"></ol>
         </div>
     </div>
-    <script>
-        (() => {
-            const dojoConfig = {
-                async: true,
-                packages: [
-                    {
-                        name: "proj4",
-                        location: "https://cdn.jsdelivr.net/npm/proj4@2.4.4/dist",
-                        main: "proj4"
-                    }
-                ]
-            };
-            window.dojoConfig = dojoConfig;
-        })();
-    </script>
     <script src="https://js.arcgis.com/3.23/init.js" integrity="sha384-QUGOO+2tHNKvwiXmNxaAzPzil0WHtRgz63LF0xFQ7yhF9HK2lFTjFWhwWukyVZzA" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="dist/script.js"></script>
 </body>
 </html>
