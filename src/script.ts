@@ -1,4 +1,5 @@
 import proj4 from "proj4";
+import { showDataInDialog, showDialogHandler } from "./dialogUtils";
 
 import { loadModules } from "esri-loader";
 
@@ -44,11 +45,9 @@ loadModules([
     });
     map.addLayer(graphicsLayer);
 
-    document
-      .getElementById("clearButton")!
-      .addEventListener("click", function() {
-        graphicsLayer.clear();
-      });
+    document.getElementById("clearButton")!.addEventListener("click", () => {
+      graphicsLayer.clear();
+    });
 
     const pointSymbol = new SimpleMarkerSymbol();
     const lineSymbol = new SimpleLineSymbol();
@@ -56,7 +55,7 @@ loadModules([
 
     const draw = new Draw(map);
 
-    draw.on("draw-complete", function(e) {
+    draw.on("draw-complete", (e: any) => {
       console.log("draw-complete", e);
       const geoType = e.geometry.type;
       const symbol = /point/i.test(geoType)
@@ -69,7 +68,7 @@ loadModules([
       graphicsLayer.add(g);
     });
 
-    drawSelect.addEventListener("change", function(e) {
+    drawSelect.addEventListener("change", e => {
       const target = e.target as HTMLSelectElement;
       const val = target.value;
       if (val) {
@@ -79,7 +78,7 @@ loadModules([
       }
     });
 
-    function projectPoints(pointsOrCoords, outPrj?) {
+    function projectPoints(pointsOrCoords: any, outPrj?: string) {
       const re = /^(?:(?:points)|(?:rings)|(?:paths))$/;
       if (
         (pointsOrCoords.hasOwnProperty("x") &&
@@ -90,7 +89,7 @@ loadModules([
       ) {
         return proj4(MAP_PRJ_NAME, outPrj, pointsOrCoords);
       } else {
-        let match: RegExpMatchArray;
+        let match!: RegExpMatchArray | null;
         // tslint:disable-next-line:forin
         for (const propName in pointsOrCoords) {
           match = propName.match(re);
@@ -99,19 +98,24 @@ loadModules([
           }
         }
         if (match) {
-          const output = {};
+          const output: {
+            [key: string]: any;
+            points?: number[];
+            rings?: number[];
+            paths?: number[];
+          } = {};
           output[match[0]] = projectPoints(pointsOrCoords[match[0]]);
           return output;
         } else {
-          return pointsOrCoords.map(function(a) {
+          return pointsOrCoords.map((a: number[]) => {
             proj4(MAP_PRJ_NAME, outPrj, a);
           });
         }
       }
     }
 
-    const exportButton = document.getElementById("exportButton");
-    exportButton.addEventListener("click", function() {
+    const exportButton = document.getElementById("exportButton")!;
+    exportButton.addEventListener("click", () => {
       const csSelect = document.getElementById(
         "csSelect"
       ) as HTMLSelectElement | null;
@@ -124,8 +128,8 @@ loadModules([
         graphicsLayer.graphics &&
         graphicsLayer.graphics.length
       ) {
-        const sr = { wkid: parseInt(outPrj.match(/EPSG:(\d+)/)[1], 10) }; // graphicsLayer.graphics[0].geometry.spatialReference;
-        const jsonFeatures = graphicsLayer.graphics.map(function(g) {
+        const sr = { wkid: parseInt(outPrj.match(/EPSG:(\d+)/)![1], 10) }; // graphicsLayer.graphics[0].geometry.spatialReference;
+        const jsonFeatures = graphicsLayer.graphics.map((g: any) => {
           const o = g.toJson();
           delete o.symbol;
           delete o.geometry.spatialReference;
@@ -143,13 +147,15 @@ loadModules([
           encodeURIComponent(jsonString)
         ].join(",");
         const a = document.createElement("a");
+        a.title = "Right-click this link to open in new tab.";
         a.href = url;
         a.target = "_blank";
         a.textContent = "Exported Graphics";
+        a.addEventListener("click", showDialogHandler);
 
         const li = document.createElement("li");
         li.appendChild(a);
-        document.getElementById("exportedGraphics").appendChild(li);
+        document.getElementById("exportedGraphics")!.appendChild(li);
       }
     });
   }

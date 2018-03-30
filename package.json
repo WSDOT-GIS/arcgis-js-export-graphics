@@ -13,10 +13,13 @@
   },
   "devDependencies": {
     "@types/arcgis-js-api": "^3.23",
+    "@types/proj4": "^2.3.4",
+    "css-loader": "^0.28.11",
     "esri-loader": "^2.2.0",
     "prettier": "^1.11.1",
     "proj4": "^2.4.4",
     "source-map": "^0.7.2",
+    "style-loader": "^0.20.3",
     "ts-loader": "^4.1.0",
     "tslib": "^1.9.0",
     "tslint": "^5.9.1",
@@ -26,5 +29,7 @@
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dialog-polyfill": "^0.4.9"
+  }
 }
