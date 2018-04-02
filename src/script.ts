@@ -1,5 +1,5 @@
 import proj4 from "proj4";
-import { showDataInDialog, showDialogHandler } from "./dialogUtils";
+import { makeCloseableTextAreaDialog, showDialogHandler } from "./dialogUtils";
 
 import { loadModules } from "esri-loader";
 
@@ -26,6 +26,8 @@ loadModules([
     const drawSelect = document.getElementById(
       "drawSelect"
     ) as HTMLSelectElement;
+
+    const dialog = makeCloseableTextAreaDialog("exportDialog");
 
     proj4.defs(
       "EPSG:2927",
@@ -144,6 +146,7 @@ loadModules([
 
         const url = `data:application/json,${encodeURIComponent(jsonString)}`;
         const a = document.createElement("a");
+        a.dataset.dialogId = dialog.id;
         a.title = "Right-click this link to open in new tab.";
         a.href = url;
         a.target = "_blank";
