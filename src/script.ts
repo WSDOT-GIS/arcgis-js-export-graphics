@@ -142,10 +142,7 @@ loadModules([
         const jsonObjects = { features: jsonFeatures, spatialRefernence: sr };
         const jsonString = JSON.stringify(jsonObjects);
 
-        const url = [
-          "data:application/json",
-          encodeURIComponent(jsonString)
-        ].join(",");
+        const url = `data:application/json,${encodeURIComponent(jsonString)}`;
         const a = document.createElement("a");
         a.title = "Right-click this link to open in new tab.";
         a.href = url;

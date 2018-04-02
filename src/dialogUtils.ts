@@ -1,23 +1,37 @@
 import dialogPolyfill from "dialog-polyfill";
+import { parseDataUrl } from "./conversionUtils";
+import FormatError from "./FormatError";
 
-const dialog = document.createElement("dialog") as HTMLDialogElement;
-const textArea = document.createElement("textarea");
-const closeLink = document.createElement("a");
-const header = document.createElement("header");
-header.appendChild(closeLink);
-closeLink.textContent = "X";
-closeLink.href = "#";
-closeLink.classList.add("close-link");
-dialog.appendChild(header);
-dialog.appendChild(textArea);
-document.body.appendChild(dialog);
+function makeCloseableDialog() {
+  // Create the dialog element and child content, then
+  // add dialog element to the document body.
+  // tslint:disable-next-line:no-shadowed-variable
+  const dialog = document.createElement("dialog") as HTMLDialogElement;
+  // tslint:disable-next-line:no-shadowed-variable
+  const textArea = document.createElement("textarea");
+  const closeLink = document.createElement("a");
+  const header = document.createElement("header");
+  header.classList.add("dialog-header");
+  header.appendChild(closeLink);
+  closeLink.textContent = "🗙";
+  closeLink.href = "#";
+  closeLink.classList.add("close-link");
+  dialog.appendChild(header);
+  dialog.appendChild(textArea);
+  document.body.appendChild(dialog);
 
-dialogPolyfill.registerDialog(dialog);
+  // Register the dialog element with the dialog polyfill.
+  dialogPolyfill.registerDialog(dialog);
 
-closeLink.addEventListener("click", ev => {
-  dialog.close();
-  ev.preventDefault();
-});
+  // Setup the dialog's close button functionality.
+  closeLink.addEventListener("click", ev => {
+    dialog.close();
+    ev.preventDefault();
+  });
+  return { dialog, textArea };
+}
+
+const { dialog, textArea } = makeCloseableDialog();
 
 /**
  * Shows the dialog with the given text in a text area.
@@ -26,29 +40,6 @@ closeLink.addEventListener("click", ev => {
 export function showDataInDialog(data: string) {
   textArea.textContent = data;
   dialog.showModal();
-}
-
-function parseDataUrl(dataUrl: string) {
-  // data:[<mediatype>][;base64],<data>
-  const re = /^data:([^;]+)?(?:;([^,]+))?,(.+)$/;
-  const match = dataUrl.match(re);
-  if (match) {
-    const [mediaType, base64, data] = match.slice(1);
-    let text: string;
-    if (base64) {
-      text = btoa(data);
-    } else {
-      text = decodeURIComponent(data);
-    }
-    return {
-      mediaType,
-      base64: Boolean(base64),
-      data: text
-    };
-  } else {
-    const text = dataUrl;
-    return { mediaType: null, base64: null, text };
-  }
 }
 
 /**
