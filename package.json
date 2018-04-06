@@ -13,9 +13,11 @@
   },
   "devDependencies": {
     "@types/arcgis-js-api": "^3.23",
+    "@types/pluralize": "^0.0.28",
     "@types/proj4": "^2.3.4",
     "css-loader": "^0.28.11",
     "esri-loader": "^2.2.0",
+    "pluralize": "^7.0.0",
     "prettier": "^1.11.1",
     "proj4": "^2.4.4",
     "source-map": "^0.7.2",

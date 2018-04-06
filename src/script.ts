@@ -1,3 +1,4 @@
+import pluralize from "pluralize";
 import proj4 from "proj4";
 import {
   addDialogPolyfillCss,
@@ -159,7 +160,7 @@ loadModules([
         a.title = "Right-click this link to open in new tab.";
         a.href = url;
         a.target = "_blank";
-        a.textContent = "Exported Graphics";
+        a.textContent = pluralize("feature", jsonFeatures.length, true);
         a.addEventListener("click", showDialogHandler);
 
         const li = document.createElement("li");

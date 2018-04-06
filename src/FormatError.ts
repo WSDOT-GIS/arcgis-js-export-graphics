@@ -1,3 +1,6 @@
+/**
+ * An error for when a string is the correct type but not in the expected format.
+ */
 export default class FormatError extends Error {
   /**
    * Creates a new FormatError instance

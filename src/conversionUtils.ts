@@ -1,11 +1,23 @@
 import FormatError from "./FormatError";
 
 /**
+ * Represents the components that make up a data URL.
+ */
+export interface IDataUrlParts {
+  /** The media type, aka MIME type. */
+  mediaType?: string;
+  /** Indicates if the data in the URL was base64 encoded. */
+  base64: boolean;
+  /** The unencoded data */
+  data: string;
+}
+
+/**
  * Parses a data URL into a string.
- * @param dataUrl A data URL
+ * @param {string} dataUrl A data URL
  * @throws {FormatError} Thrown if dataUrl is not a correctly formatted data URL.
  */
-export function parseDataUrl(dataUrl: string) {
+export function parseDataUrl(dataUrl: string): IDataUrlParts {
   // data:[<mediatype>][;base64],<data>
   const re = /^data:([^;]+)?(?:;([^,]+))?,(.+)$/;
   const match = dataUrl.match(re);

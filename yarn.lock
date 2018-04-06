@@ -10,6 +10,10 @@
   version "3.23.0"
   resolved "https://registry.yarnpkg.com/@types/arcgis-js-api/-/arcgis-js-api-3.23.0.tgz#89dfdca9b56ffbb69f54d593e72fc8f9c6c8a119"
 
+"@types/pluralize@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/pluralize/-/pluralize-0.0.28.tgz#daf46f90fdaa6172600bfeac81e46065177f03ea"
+
 "@types/proj4@^2.3.4":
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/@types/proj4/-/proj4-2.3.4.tgz#f388b60209c4cb75ec21a17a4b4ac55a71a58558"
@@ -3635,6 +3639,10 @@ pkg-dir@^2.0.0:
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
   dependencies:
     find-up "^2.1.0"
+
+pluralize@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

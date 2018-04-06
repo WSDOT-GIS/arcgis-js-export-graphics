@@ -1,20 +1,53 @@
+
 html, body, #map, .map.container {
     padding:0;
     margin:0;
     height:100%;
+
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#tools {
+.tools-container {
     position: absolute;
     top: 0;
     right: 0;
     z-index: 1;
+    max-width: 500px;
+}
 
+.tools {
     margin: 1em 1em 0 0;
     padding: 1em;
-
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.48);
     border-radius: 10px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.result-list ol {
+    margin: unset;
+    padding: unset;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.result-list li {
+    background: rgba(255,255,255, 0.48);
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 10pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: inline;
+    margin: unset;
+    padding: unset;
+    padding: 0.2em;
+}
+
+.result-list a {
+    text-decoration-line: unset;
 }
 
 dialog header {

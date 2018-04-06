@@ -6,18 +6,29 @@
 import dialogPolyfill from "dialog-polyfill";
 import { parseDataUrl } from "./conversionUtils";
 import FormatError from "./FormatError";
-import { supportsDialog } from "./tests";
+
+/**
+ * Tests the browser to see if it supports <dialog> natively.
+ * @returns {boolean} Returns true if browser supports <dialog> natively, false otherwise.
+ */
+export function supportsDialog(): boolean {
+  const dialog = document.createElement("dialog") as HTMLDialogElement;
+  return !!dialog.show && !!dialog.showModal && !!dialog.close;
+}
 
 const needsDialogPolyfill = !supportsDialog();
 
 /**
  * Adds link to CSS file <link> to document head only if <dialog> is not supported natively.
- * @param cssPath Path to CSS file for dialog polyfill.
- * E.g., https://cdn.jsdelivr.net/npm/dialog-polyfill@0.4.9/dialog-polyfill.css
- * @param sri Optional SRI hash
- * @returns Returns the link if it was added, or null otherwise.
+ * @param {string} cssPath Path to CSS file for dialog polyfill.
+ * @param {string} [sri] Optional SRI hash.
+ * @see https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+ * @returns {?HTMLLinkElement} Returns the <link> element if it was added, or null otherwise.
  */
-export function addDialogPolyfillCss(cssPath: string, sri?: string) {
+export function addDialogPolyfillCss(
+  cssPath: string,
+  sri?: string
+): HTMLLinkElement | null {
   if (needsDialogPolyfill) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -36,9 +47,14 @@ export function addDialogPolyfillCss(cssPath: string, sri?: string) {
  * Creates a dialog and registers it with the dialog polyfill.
  * At the top of the dialog will be a close button that will
  * dismiss the dialog.
- * @param content The content of the dialog
+ * @param {string} id - The value to assign to the dialog element's "id" attribute.
+ * @param {HTMLElement} [content] The content of the dialog
+ * @returns {HTMLDialogElement}
  */
-function makeCloseableDialog(id: string, content?: HTMLElement) {
+function makeCloseableDialog(
+  id: string,
+  content?: HTMLElement
+): HTMLDialogElement {
   // Create the dialog element and child content, then
   // add dialog element to the document body.
   // tslint:disable-next-line:no-shadowed-variable
@@ -76,7 +92,12 @@ function makeCloseableDialog(id: string, content?: HTMLElement) {
   return dialog;
 }
 
-export function makeCloseableTextAreaDialog(id: string) {
+/**
+ * Creates a closeable dialog containing a <textarea> element.
+ * @param {string} id Value to assign to the dialog's id attribute
+ * @returns {HTMLDialogElement}
+ */
+export function makeCloseableTextAreaDialog(id: string): HTMLDialogElement {
   const textArea = document.createElement("textarea");
   textArea.readOnly = true;
 
@@ -85,9 +106,9 @@ export function makeCloseableTextAreaDialog(id: string) {
 
 /**
  * An event handler that will open the dialog and show the contents of the data URL.
- * @param this The <a> element that is being assigned an event handler. This <a> element
+ * @this {HTMLAnchorElement} The <a> element that is being assigned an event handler. This <a> element
  * must have a data-dialog-id attribute set to the value of a dialog element's id attribute
- * @param ev mouse event.
+ * @param {MouseEvent} ev mouse event.
  */
 export function showDialogHandler(this: HTMLAnchorElement, ev: MouseEvent) {
   const dataUrl = this.href;
@@ -113,7 +134,6 @@ export function showDialogHandler(this: HTMLAnchorElement, ev: MouseEvent) {
         dialog.showModal();
       }
     }
-    // showDataInDialog(data);
   }
 
   ev.preventDefault();
