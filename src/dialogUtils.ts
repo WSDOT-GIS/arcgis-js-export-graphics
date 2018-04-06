@@ -6,6 +6,31 @@
 import dialogPolyfill from "dialog-polyfill";
 import { parseDataUrl } from "./conversionUtils";
 import FormatError from "./FormatError";
+import { supportsDialog } from "./tests";
+
+const needsDialogPolyfill = !supportsDialog();
+
+/**
+ * Adds link to CSS file <link> to document head only if <dialog> is not supported natively.
+ * @param cssPath Path to CSS file for dialog polyfill.
+ * E.g., https://cdn.jsdelivr.net/npm/dialog-polyfill@0.4.9/dialog-polyfill.css
+ * @param sri Optional SRI hash
+ * @returns Returns the link if it was added, or null otherwise.
+ */
+export function addDialogPolyfillCss(cssPath: string, sri?: string) {
+  if (needsDialogPolyfill) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssPath;
+    if (sri) {
+      link.integrity = sri;
+      link.crossOrigin = "anonymous";
+    }
+    document.head.appendChild(link);
+    return link;
+  }
+  return null;
+}
 
 /**
  * Creates a dialog and registers it with the dialog polyfill.
@@ -34,11 +59,13 @@ function makeCloseableDialog(id: string, content?: HTMLElement) {
   }
   document.body.appendChild(dialog);
 
-  // Register the dialog element with the dialog polyfill.
-  // When all modern browsers support the dialog element,
-  // the polyfill and this registration step will no longer
-  // be necessary.
-  dialogPolyfill.registerDialog(dialog);
+  if (needsDialogPolyfill) {
+    // Register the dialog element with the dialog polyfill.
+    // When all modern browsers support the dialog element,
+    // the polyfill and this registration step will no longer
+    // be necessary.
+    dialogPolyfill.registerDialog(dialog);
+  }
 
   // Setup the dialog's close button functionality.
   closeLink.addEventListener("click", ev => {

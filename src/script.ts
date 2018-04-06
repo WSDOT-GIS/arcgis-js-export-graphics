@@ -1,7 +1,16 @@
 import proj4 from "proj4";
-import { makeCloseableTextAreaDialog, showDialogHandler } from "./dialogUtils";
+import {
+  addDialogPolyfillCss,
+  makeCloseableTextAreaDialog,
+  showDialogHandler
+} from "./dialogUtils";
 
 import { loadModules } from "esri-loader";
+
+addDialogPolyfillCss(
+  "https://cdn.jsdelivr.net/npm/dialog-polyfill@0.4.9/dialog-polyfill.css",
+  "sha256-hT0ET4tfm+7MyjeBepBgV2N5tOmsAVKcTWhH82jvoaA="
+);
 
 loadModules([
   "esri/geometry/webMercatorUtils",
