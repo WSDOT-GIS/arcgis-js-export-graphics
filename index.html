@@ -1,68 +1,58 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+
 <head>
     <title>Map</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css" integrity="sha384-JlJXhfCMkcb+ONuXG8SF0uwa+9zpeXcJifKmnldxRl3/9f2Kt7tLqSsSGKncUn7k" crossorigin="anonymous" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css" integrity="sha384-JlJXhfCMkcb+ONuXG8SF0uwa+9zpeXcJifKmnldxRl3/9f2Kt7tLqSsSGKncUn7k"
+        crossorigin="anonymous" />
     <link href="style.css" rel="stylesheet" />
 </head>
+
 <body>
     <div id="map">
-        <div id="tools">
-            <label for="drawSelect">Draw Select</label>
-            <select id="drawSelect">
-                <option value="" label="Off" selected="selected">Off</option>
-                <optgroup label="Point">
-                    <option value="MULTI_POINT" label="MULTI_POINT" title="Draws a Multipoint.">MULTI_POINT</option>
-                    <option value="POINT" label="POINT" title="Draws a point.">POINT</option>
-                </optgroup>
-                <optgroup label="Line">
-                    <option value="FREEHAND_POLYLINE" label="FREEHAND_POLYLINE" title="Draws a freehand polyline.">FREEHAND_POLYLINE</option>
-                    <option value="LINE" label="LINE" title="Draws a line.">LINE</option>
-                    <option value="POLYLINE" label="POLYLINE" title="Draws a polyline.">POLYLINE</option>
-                </optgroup>
-                <optgroup label="Polygon">
-                    <option value="POLYGON" label="POLYGON" title="Draws a polygon.">POLYGON</option>
-                    <option value="FREEHAND_POLYGON" label="FREEHAND_POLYGON" title="Draws a freehand polygon.">FREEHAND_POLYGON</option>
-                    <option value="CIRCLE" label="CIRCLE" title="Draws a circle.">CIRCLE</option>
-                    <option value="ELLIPSE" label="ELLIPSE" title="Draws an ellipse.">ELLIPSE</option>
-                    <option value="RECTANGLE" label="RECTANGLE" title="Draws a rectangle.">RECTANGLE</option>
-                    <option value="EXTENT" label="EXTENT" title="Draws an extent box.">EXTENT</option>
-                    <option value="TRIANGLE" label="TRIANGLE" title="Draws a triangle.">TRIANGLE</option>
+        <div class="tools-container">
+            <div class="tools">
+                <label for="drawSelect">Draw Select</label>
+                <select id="drawSelect">
+                    <option value="" label="Off" selected="selected">Off</option>
+                    <optgroup label="Point">
+                        <option value="MULTI_POINT" label="MULTI_POINT" title="Draws a Multipoint.">MULTI_POINT</option>
+                        <option value="POINT" label="POINT" title="Draws a point.">POINT</option>
+                    </optgroup>
+                    <optgroup label="Line">
+                        <option value="FREEHAND_POLYLINE" label="FREEHAND_POLYLINE" title="Draws a freehand polyline.">FREEHAND_POLYLINE</option>
+                        <option value="LINE" label="LINE" title="Draws a line.">LINE</option>
+                        <option value="POLYLINE" label="POLYLINE" title="Draws a polyline.">POLYLINE</option>
+                    </optgroup>
+                    <optgroup label="Polygon">
+                        <option value="POLYGON" label="POLYGON" title="Draws a polygon.">POLYGON</option>
+                        <option value="FREEHAND_POLYGON" label="FREEHAND_POLYGON" title="Draws a freehand polygon.">FREEHAND_POLYGON</option>
+                        <option value="CIRCLE" label="CIRCLE" title="Draws a circle.">CIRCLE</option>
+                        <option value="ELLIPSE" label="ELLIPSE" title="Draws an ellipse.">ELLIPSE</option>
+                        <option value="RECTANGLE" label="RECTANGLE" title="Draws a rectangle.">RECTANGLE</option>
+                        <option value="EXTENT" label="EXTENT" title="Draws an extent box.">EXTENT</option>
+                        <option value="TRIANGLE" label="TRIANGLE" title="Draws a triangle.">TRIANGLE</option>
 
-                    <option value="ARROW" label="ARROW" title="Draws an arrow.">ARROW</option>
-                    <option value="DOWN_ARROW" label="DOWN_ARROW" title="Draws an arrow that points down.">DOWN_ARROW</option>
-                    <option value="LEFT_ARROW" label="LEFT_ARROW" title="Draws an arrow that points left.">LEFT_ARROW</option>
-                    <option value="RIGHT_ARROW" label="RIGHT_ARROW" title="Draws an arrow that points right.">RIGHT_ARROW</option>
-                    <option value="UP_ARROW" label="UP_ARROW" title="Draws an arrow that points up.">UP_ARROW</option>
-                </optgroup>
-            </select>
-            <button id="clearButton">Clear</button>
-            <label for="csSelect">Coordinate System</label>
-            <select id="csSelect">
-                <option value="EPSG:3857" title="WGS 84 / Pseudo-Mercator -- Spherical Mercator, Google Maps, OpenStreetMap, Bing, ArcGIS, ESRI" selected>Pseudo Mercator</option>
-                <option value="EPSG:4326" title="WGS 84 -- WGS84 - World Geodetic System 1984, used in GPS ">WGS84</option>
-                <option value="EPSG:2927" title="NAD83(HARN) / Washington South (ftUS)">NAD83(HARN) / Washington South (ftUS)</option>
-            </select>
-            <button id="exportButton" type="button">Export Graphics</button>
-            <ol id="exportedGraphics"></ol>
+                        <option value="ARROW" label="ARROW" title="Draws an arrow.">ARROW</option>
+                        <option value="DOWN_ARROW" label="DOWN_ARROW" title="Draws an arrow that points down.">DOWN_ARROW</option>
+                        <option value="LEFT_ARROW" label="LEFT_ARROW" title="Draws an arrow that points left.">LEFT_ARROW</option>
+                        <option value="RIGHT_ARROW" label="RIGHT_ARROW" title="Draws an arrow that points right.">RIGHT_ARROW</option>
+                        <option value="UP_ARROW" label="UP_ARROW" title="Draws an arrow that points up.">UP_ARROW</option>
+                    </optgroup>
+                </select>
+                <button id="exportButton" type="button">Export Graphics</button>
+                <button id="clearButton">Clear</button>
+
+            </div>
+            <div class="result-list">
+                <ol id="exportedGraphics"></ol>
+            </div>
         </div>
     </div>
-    <script>
-        (() => {
-            const dojoConfig = {
-                async: true,
-                packages: [
-                    {
-                        name: "proj4",
-                        location: "https://cdn.jsdelivr.net/npm/proj4@2.4.4/dist",
-                        main: "proj4"
-                    }
-                ]
-            };
-            window.dojoConfig = dojoConfig;
-        })();
-    </script>
-    <script src="https://js.arcgis.com/3.23/init.js" integrity="sha384-QUGOO+2tHNKvwiXmNxaAzPzil0WHtRgz63LF0xFQ7yhF9HK2lFTjFWhwWukyVZzA" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="https://js.arcgis.com/3.23/init.js" integrity="sha384-QUGOO+2tHNKvwiXmNxaAzPzil0WHtRgz63LF0xFQ7yhF9HK2lFTjFWhwWukyVZzA"
+        crossorigin="anonymous"></script>
+    <script src="dist/script.js"></script>
 </body>
+
 </html>
