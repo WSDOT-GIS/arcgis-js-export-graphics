@@ -1,5 +1,4 @@
 import pluralize from "pluralize";
-import proj4 from "proj4";
 import {
   addDialogPolyfillCss,
   makeCloseableTextAreaDialog,
@@ -39,12 +38,6 @@ loadModules([
 
     const dialog = makeCloseableTextAreaDialog("exportDialog");
 
-    proj4.defs(
-      "EPSG:2927",
-      "+proj=lcc +lat_1=47.33333333333334 +lat_2=45.83333333333334 +lat_0=45.33333333333334 +lon_0=-120.5 +x_0=500000.0001016001 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs"
-    );
-    const MAP_PRJ_NAME = "EPSG:3857";
-
     const map = new EsriMap("map", {
       basemap: "gray-vector",
       center: [-120.80566406246835, 47.41322033015946],
@@ -74,12 +67,15 @@ loadModules([
         ? pointSymbol
         : /line/i.test(geoType) ? lineSymbol : polygonSymbol;
       const g = new Graphic(e.geometry, symbol, {
-        label: ["This is a", e.geometry.type].join(" ")
+        label: `This is a ${e.geometry.type}`
       });
       console.log("graphic", g);
       graphicsLayer.add(g);
     });
 
+    // When the user selects an option from the select,
+    // change the activated tool (or deactivate if no
+    // tool is selected).
     drawSelect.addEventListener("change", e => {
       const target = e.target as HTMLSelectElement;
       const val = target.value;
@@ -90,78 +86,44 @@ loadModules([
       }
     });
 
-    function projectPoints(pointsOrCoords: any, outPrj?: string) {
-      const re = /^(?:(?:points)|(?:rings)|(?:paths))$/;
-      if (
-        (pointsOrCoords.hasOwnProperty("x") &&
-          pointsOrCoords.hasOwnProperty("y")) ||
-        (Array.isArray(pointsOrCoords) &&
-          pointsOrCoords.length >= 2 &&
-          typeof pointsOrCoords[0] === "number")
-      ) {
-        return proj4(MAP_PRJ_NAME, outPrj, pointsOrCoords);
-      } else {
-        let match!: RegExpMatchArray | null;
-        // tslint:disable-next-line:forin
-        for (const propName in pointsOrCoords) {
-          match = propName.match(re);
-          if (match) {
-            break;
-          }
-        }
-        if (match) {
-          const output: {
-            [key: string]: any;
-            points?: number[];
-            rings?: number[];
-            paths?: number[];
-          } = {};
-          output[match[0]] = projectPoints(pointsOrCoords[match[0]]);
-          return output;
-        } else {
-          return pointsOrCoords.map((a: number[]) => {
-            proj4(MAP_PRJ_NAME, outPrj, a);
-          });
-        }
-      }
+    function layerHasGraphics(layer: any) {
+      return layer && layer.graphics && layer.graphics.length;
+    }
+
+    function projectGraphic(graphic: any) {
+      const { geometry, attributes } = graphic;
+      const projectedGeometry = webMercatorUtils.webMercatorToGeographic(
+        geometry
+      );
+      delete projectedGeometry.spatialReference;
+      return {
+        geometry: projectedGeometry,
+        attributes
+      };
+    }
+
+    function createAnchor(gLayer: any) {
+      const sr = { wkid: 4326 };
+      const jsonFeatures = gLayer.graphics.map(projectGraphic);
+      const jsonObjects = { features: jsonFeatures, spatialRefernence: sr };
+
+      const jsonString = JSON.stringify(jsonObjects);
+      const url = `data:application/json,${encodeURIComponent(jsonString)}`;
+      const a = document.createElement("a");
+      a.dataset.dialogId = dialog.id;
+      a.title = "Right-click this link to open in new tab.";
+      a.href = url;
+      a.target = "_blank";
+      a.textContent = pluralize("feature", jsonFeatures.length, true);
+      a.addEventListener("click", showDialogHandler);
+
+      return a;
     }
 
     const exportButton = document.getElementById("exportButton")!;
     exportButton.addEventListener("click", () => {
-      const csSelect = document.getElementById(
-        "csSelect"
-      ) as HTMLSelectElement | null;
-      if (!csSelect) {
-        throw new TypeError("Expected #csSelect to be a valid DOM element");
-      }
-      const outPrj = csSelect.value;
-      if (
-        graphicsLayer &&
-        graphicsLayer.graphics &&
-        graphicsLayer.graphics.length
-      ) {
-        const sr = { wkid: parseInt(outPrj.match(/EPSG:(\d+)/)![1], 10) }; // graphicsLayer.graphics[0].geometry.spatialReference;
-        const jsonFeatures = graphicsLayer.graphics.map((g: any) => {
-          const o = g.toJson();
-          delete o.symbol;
-          delete o.geometry.spatialReference;
-          if (outPrj !== MAP_PRJ_NAME) {
-            // Project geometry.
-            o.geometry = projectPoints(o.geometry, outPrj);
-          }
-          return o;
-        });
-        const jsonObjects = { features: jsonFeatures, spatialRefernence: sr };
-        const jsonString = JSON.stringify(jsonObjects);
-
-        const url = `data:application/json,${encodeURIComponent(jsonString)}`;
-        const a = document.createElement("a");
-        a.dataset.dialogId = dialog.id;
-        a.title = "Right-click this link to open in new tab.";
-        a.href = url;
-        a.target = "_blank";
-        a.textContent = pluralize("feature", jsonFeatures.length, true);
-        a.addEventListener("click", showDialogHandler);
+      if (layerHasGraphics(graphicsLayer)) {
+        const a = createAnchor(graphicsLayer);
 
         const li = document.createElement("li");
         li.appendChild(a);
